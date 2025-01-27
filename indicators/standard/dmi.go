@@ -6,8 +6,7 @@ import (
 	"math"
 )
 
-func DMISeries(candles []trading.Candler, period int) ([]trading.DMIValue, error) {
-
+func DMISeries(candles []trading.Candle, period int) ([]trading.DMIValue, error) {
 	if len(candles) <= period {
 		return nil, fmt.Errorf("not enough data to calculate DMI")
 	}
@@ -21,12 +20,12 @@ func DMISeries(candles []trading.Candler, period int) ([]trading.DMIValue, error
 
 	// Calculate True Range (TR), +DM, and -DM
 	for i := 1; i < len(candles); i++ {
-		up := candles[i].GetHigh() - candles[i-1].GetHigh()
-		down := candles[i-1].GetLow() - candles[i].GetLow()
+		up := candles[i].H - candles[i-1].H
+		down := candles[i-1].L - candles[i].L
 
 		// True Range
-		tr[i] = math.Max(candles[i].GetHigh()-candles[i].GetLow(),
-			math.Max(math.Abs(candles[i].GetHigh()-candles[i-1].GetClose()), math.Abs(candles[i].GetLow()-candles[i-1].GetClose())))
+		tr[i] = math.Max(candles[i].H-candles[i].L,
+			math.Max(math.Abs(candles[i].H-candles[i-1].C), math.Abs(candles[i].L-candles[i-1].C)))
 
 		// Positive Directional Movement (+DM)
 		if up > down && up > 0 {
@@ -85,14 +84,4 @@ func DMISeries(candles []trading.Candler, period int) ([]trading.DMIValue, error
 	}
 
 	return dmi, nil
-}
-
-func LastDMI(candles []trading.Candler, period int) (*trading.DMIValue, error) {
-
-	return nil, nil
-}
-
-func NextDMI(series []trading.DMIValue, candle trading.Candler, period int) (*trading.DMIValue, error) {
-
-	return nil, nil
 }

@@ -5,7 +5,11 @@ import (
 	"github.com/pr47h4m/trading"
 )
 
-func RSISeries(candles []trading.Candler, period int) ([]trading.RSIValue, error) {
+/*
+RSISeries - Relative Strength Index
+Calculates the RSI values for the provided candles and period.
+*/
+func RSISeries(candles []trading.Candle, period int) ([]trading.RSIValue, error) {
 	if len(candles) <= period {
 		return nil, fmt.Errorf("not enough data or invalid period")
 	}
@@ -15,7 +19,7 @@ func RSISeries(candles []trading.Candler, period int) ([]trading.RSIValue, error
 	gains, losses := 0.0, 0.0
 
 	for i := 1; i < period; i++ {
-		change := candles[i].GetClose() - candles[i-1].GetClose()
+		change := candles[i].C - candles[i-1].C
 		if change > 0 {
 			gains += change
 		} else {
@@ -26,11 +30,11 @@ func RSISeries(candles []trading.Candler, period int) ([]trading.RSIValue, error
 	avgGain := gains / float64(period)
 	avgLoss := losses / float64(period)
 
-	rsi[0].Time = candles[period].GetTime()
+	rsi[0].Time = candles[period].T
 	rsi[0].Value = 100 - (100 / (1 + avgGain/avgLoss))
 
 	for i := period + 1; i < len(candles); i++ {
-		change := candles[i].GetClose() - candles[i-1].GetClose()
+		change := candles[i].C - candles[i-1].C
 		if change > 0 {
 			gains = change
 			losses = 0
@@ -42,25 +46,14 @@ func RSISeries(candles []trading.Candler, period int) ([]trading.RSIValue, error
 		avgGain = ((avgGain * float64(period-1)) + gains) / float64(period)
 		avgLoss = ((avgLoss * float64(period-1)) + losses) / float64(period)
 
-		rsi[i-period].Time = candles[i].GetTime()
+		rsi[i-period].Time = candles[i].T
 		if avgLoss == 0 {
 			rsi[i-period].Value = 100
 		} else {
 			rs := avgGain / avgLoss
 			rsi[i-period].Value = 100 - (100 / (1 + rs))
 		}
-
 	}
 
 	return rsi, nil
-}
-
-func LastRSI(candles []trading.Candler, period int) (*trading.RSIValue, error) {
-
-	return nil, nil
-}
-
-func NextRSI(series []trading.RSIValue, candle trading.Candler, period int) (*trading.RSIValue, error) {
-
-	return nil, nil
 }
