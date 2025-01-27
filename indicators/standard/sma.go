@@ -28,7 +28,7 @@ func SMASeries(candles []trading.Candler, period int) ([]trading.SMAValue, error
 		}
 	}
 
-	return nil, nil
+	return sma, nil
 }
 
 /*

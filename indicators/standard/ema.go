@@ -24,7 +24,8 @@ func EMASeries(candles []trading.Candler, period int) ([]trading.EMAValue, error
 		currentEMA := (candles[i].GetClose() * multiplier) + (ema[i-period].Value * (1 - multiplier))
 		ema[i-period+1] = trading.EMAValue{Time: candles[i].GetTime(), Value: currentEMA}
 	}
-	return nil, nil
+
+	return ema, nil
 }
 
 func LastEMA(candles []trading.Candler, period int) (*trading.EMAValue, error) {
