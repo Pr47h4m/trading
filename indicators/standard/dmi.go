@@ -2,11 +2,11 @@ package standard
 
 import (
 	"fmt"
-	"github.com/pr47h4m/trading"
+	"github.com/pr47h4m/trading/types"
 	"math"
 )
 
-func DMISeries(candles []trading.Candle, period int) ([]trading.DMIValue, error) {
+func DMISeries(candles []types.Candle, period int) ([]types.DMIValue, error) {
 	if len(candles) <= period {
 		return nil, fmt.Errorf("not enough data to calculate DMI")
 	}
@@ -16,7 +16,7 @@ func DMISeries(candles []trading.Candle, period int) ([]trading.DMIValue, error)
 	tr := make([]float64, n)
 	plusDM := make([]float64, n)
 	minusDM := make([]float64, n)
-	dmi := make([]trading.DMIValue, len(candles))
+	dmi := make([]types.DMIValue, len(candles))
 
 	// Calculate True Range (TR), +DM, and -DM
 	for i := 1; i < len(candles); i++ {

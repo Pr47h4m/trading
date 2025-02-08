@@ -2,19 +2,19 @@ package standard
 
 import (
 	"fmt"
-	"github.com/pr47h4m/trading"
+	"github.com/pr47h4m/trading/types"
 )
 
 /*
 RSISeries - Relative Strength Index
 Calculates the RSI values for the provided candles and period.
 */
-func RSISeries(candles []trading.Candle, period int) ([]trading.RSIValue, error) {
+func RSISeries(candles []types.Candle, period int) ([]types.RSIValue, error) {
 	if len(candles) <= period {
 		return nil, fmt.Errorf("not enough data or invalid period")
 	}
 
-	rsi := make([]trading.RSIValue, len(candles)-period)
+	rsi := make([]types.RSIValue, len(candles)-period)
 
 	gains, losses := 0.0, 0.0
 

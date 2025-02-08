@@ -2,15 +2,15 @@ package standard
 
 import (
 	"fmt"
-	"github.com/pr47h4m/trading"
+	"github.com/pr47h4m/trading/types"
 )
 
-func EMASeries(candles []trading.Candle, period int) ([]trading.EMAValue, error) {
+func EMASeries(candles []types.Candle, period int) ([]types.EMAValue, error) {
 	if len(candles) <= period {
 		return nil, fmt.Errorf("not enough data or invalid period")
 	}
 
-	ema := make([]trading.EMAValue, len(candles)-period+1)
+	ema := make([]types.EMAValue, len(candles)-period+1)
 	multiplier := 2.0 / float64(period+1)
 
 	var smaSum float64
@@ -18,11 +18,11 @@ func EMASeries(candles []trading.Candle, period int) ([]trading.EMAValue, error)
 		smaSum += candles[i].C
 	}
 	initialEMA := smaSum / float64(period)
-	ema[0] = trading.EMAValue{Time: candles[period-1].T, Value: initialEMA}
+	ema[0] = types.EMAValue{Time: candles[period-1].T, Value: initialEMA}
 
 	for i := period; i < len(candles); i++ {
 		currentEMA := (candles[i].C * multiplier) + (ema[i-period].Value * (1 - multiplier))
-		ema[i-period+1] = trading.EMAValue{Time: candles[i].T, Value: currentEMA}
+		ema[i-period+1] = types.EMAValue{Time: candles[i].T, Value: currentEMA}
 	}
 
 	return ema, nil

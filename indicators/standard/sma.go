@@ -2,19 +2,19 @@ package standard
 
 import (
 	"fmt"
-	"github.com/pr47h4m/trading"
+	"github.com/pr47h4m/trading/types"
 )
 
 /*
 SMASeries - Simple Moving Average
 Calculates the entire SMA series for the provided candles and period.
 */
-func SMASeries(candles []trading.Candle, period int) ([]trading.SMAValue, error) {
+func SMASeries(candles []types.Candle, period int) ([]types.SMAValue, error) {
 	if len(candles) < period {
 		return nil, fmt.Errorf("not enough data or invalid period")
 	}
 
-	sma := make([]trading.SMAValue, len(candles)-period+1)
+	sma := make([]types.SMAValue, len(candles)-period+1)
 	var sum float64
 
 	for i, c := range candles {
