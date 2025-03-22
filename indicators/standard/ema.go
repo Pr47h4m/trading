@@ -2,10 +2,11 @@ package standard
 
 import (
 	"fmt"
+
 	"github.com/pr47h4m/trading/types"
 )
 
-func EMASeries(candles []types.Candle, period int) ([]types.EMAValue, error) {
+func EMASeries(candles []*types.Candle, period int) ([]types.EMAValue, error) {
 	if len(candles) <= period {
 		return nil, fmt.Errorf("not enough data or invalid period")
 	}

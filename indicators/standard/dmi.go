@@ -2,11 +2,12 @@ package standard
 
 import (
 	"fmt"
-	"github.com/pr47h4m/trading/types"
 	"math"
+
+	"github.com/pr47h4m/trading/types"
 )
 
-func DMISeries(candles []types.Candle, period int) ([]types.DMIValue, error) {
+func DMISeries(candles []*types.Candle, period int) ([]types.DMIValue, error) {
 	if len(candles) <= period {
 		return nil, fmt.Errorf("not enough data to calculate DMI")
 	}
